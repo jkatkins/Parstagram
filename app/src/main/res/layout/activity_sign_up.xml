@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
-
-
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -30,7 +30,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="text"
-            android:hint="Username"/>
+            android:hint="New Username"/>
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
@@ -38,15 +38,15 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPassword"
-            android:hint="Password"/>
-
-        <Button
-            android:id="@+id/btnLogin"
+            android:hint="New Password"/>
+        <EditText
+            android:id="@+id/etConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#459FFF"
-            android:text="Login" />
+            android:ems="10"
+            android:inputType="textPassword"
+            android:hint="Confirm Password"/>
 
         <Button
             android:id="@+id/btnSignUp"
@@ -61,5 +61,5 @@
     </LinearLayout>
 
 
-</RelativeLayout>
 
+</RelativeLayout>

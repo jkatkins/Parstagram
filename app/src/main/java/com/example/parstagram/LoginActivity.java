@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.parstagram.databinding.ActivityLoginBinding;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -19,20 +20,24 @@ public class LoginActivity extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
     Button btnLogin;
+    Button btnSignUp;
+    ActivityLoginBinding binding;
     public static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         if (ParseUser.getCurrentUser() != null)  {
             goMainActivity();
         }
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
+        etUsername = binding.etUsername;
+        etPassword = binding.etPassword;
+        btnLogin = binding.btnLogin;
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +47,28 @@ public class LoginActivity extends AppCompatActivity {
                 LoginUser(username,password);
             }
         });
+        btnSignUp = binding.btnSignUp;
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i(TAG,"Signup Pressed");
+                Intent i = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivityForResult(i,42); //42 is hardcoded request code
+            }
+        });
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 42) { //42 is hardcoded request code
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG,"got result");
+                if (ParseUser.getCurrentUser() != null)  {
+                    Log.i(TAG,"instant login");
+                    goMainActivity();
+                }
+            }
+        }
     }
 
     private void LoginUser(String username, String password) {

@@ -5,13 +5,18 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 @ParseClassName("Post")
 public class Post extends ParseObject {
 
+    //TODO fix capitalization on parse to make it uniform
     public static final String KEY_DESCRIPTION = "Description";
     public static final String KEY_IMAGE = "Image";
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_KEY = "createdAt";
+    public static final String KEY_COMMENTS = "Comments";
 
     public Post (){}
 

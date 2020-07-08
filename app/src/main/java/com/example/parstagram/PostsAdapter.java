@@ -19,6 +19,8 @@ import com.example.parstagram.Fragments.ComposeFragment;
 import com.example.parstagram.Fragments.DetailFragment;
 import com.parse.ParseFile;
 
+import org.parceler.Parcels;
+
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -78,20 +80,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     Log.i("spqqrf",Integer.toString(getAdapterPosition()));
                     FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
                     Bundle bundle = new Bundle();
-                    prepBundle(bundle);
+                    //prepBundle(bundle);
+                    bundle.putParcelable("post", Parcels.wrap(currentPost));
                     DetailFragment fragInfo = new DetailFragment();
                     fragInfo.setArguments(bundle);
                     FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.flContainer,fragInfo);
                     transaction.commit();
                 }
             });
-        }
-
-        public void prepBundle (Bundle bundle) {
-            bundle.putString("username",currentPost.getUser().getUsername());
-            bundle.putString("description",currentPost.getDescription());
-            bundle.putString("imageUrl",currentPost.getImage().getUrl());
-            bundle.putString("createdAt",currentPost.getCreatedAt().toString());
         }
 
         public void bind(Post post) {
