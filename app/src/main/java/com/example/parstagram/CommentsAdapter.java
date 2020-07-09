@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parstagram.databinding.CommentBinding;
+import com.parse.ParseException;
 
 import java.util.List;
 
@@ -34,7 +35,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = comments.get(position);
-        holder.bind(comment);
+        try {
+            holder.bind(comment);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,7 +59,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         }
 
 
-        public void bind(Comment comment) {
+        public void bind(Comment comment) throws ParseException {
             tvUsername.setText(comment.getUser().getUsername());
             tvText.setText(comment.getText());
         }

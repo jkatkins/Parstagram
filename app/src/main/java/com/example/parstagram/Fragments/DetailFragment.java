@@ -138,9 +138,9 @@ public class DetailFragment extends Fragment {
     }
     protected void queryComments() {
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
-        query.include(Comment.KEY_USER);
+        query.include(Comment.KEY_POST);
         query.setLimit(20);
-        query.whereEqualTo(Comment.KEY_USER, ParseUser.getCurrentUser());
+        query.whereEqualTo(Comment.KEY_POST, post);
         query.addDescendingOrder(Comment.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Comment>() {
             @Override

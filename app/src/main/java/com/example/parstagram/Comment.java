@@ -1,6 +1,7 @@
 package com.example.parstagram;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.ParseObject;
 
@@ -22,8 +23,8 @@ public class Comment extends ParseObject {
         put(KEY_TEXT,text);
     }
 
-    public ParseUser getUser() {
-        return (getParseUser(KEY_USER));
+    public ParseUser getUser() throws ParseException {
+        return (getParseUser(KEY_USER).fetch());
     }
     public void setUser(ParseUser user) {
         put(KEY_USER,user);
