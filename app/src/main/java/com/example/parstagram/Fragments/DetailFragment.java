@@ -111,7 +111,7 @@ public class DetailFragment extends Fragment {
                 } else if (comment.length() > 500) {
                     Toast.makeText(getContext(), "Comment is too long", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "make new comment here", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Posting Comment", Toast.LENGTH_SHORT).show();
                     saveComment(comment,ParseUser.getCurrentUser());
                 }
             }
@@ -132,6 +132,9 @@ public class DetailFragment extends Fragment {
                     return;
                 }
                 Log.i(TAG,"comment saved");
+                etComment.setText("");
+                commentList.add(0,comment);
+                adapter.notifyDataSetChanged();
             }
         });
 

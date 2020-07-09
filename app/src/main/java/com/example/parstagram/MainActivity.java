@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.parstagram.Fragments.ComposeFragment;
 import com.example.parstagram.Fragments.PostsFragment;
 import com.example.parstagram.Fragments.ProfileFragment;
+import com.example.parstagram.Fragments.ProfileTopFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -62,15 +63,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_home:
                         Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
                         fragment = new PostsFragment();
+                        if (fragmentManager.findFragmentById(R.id.flContainerTop) != null) {
+                            fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.flContainerTop)).commit();
+                        }
                         break;
                     case R.id.action_compose:
                         Toast.makeText(MainActivity.this, "compose", Toast.LENGTH_SHORT).show();
                         fragment = new ComposeFragment();
+                        if (fragmentManager.findFragmentById(R.id.flContainerTop) != null) {
+                            fragmentManager.beginTransaction().remove(fragmentManager.findFragmentById(R.id.flContainerTop)).commit();
+                        }
                         break;
                     case R.id.action_profile:
                     default:
                         Toast.makeText(MainActivity.this, "profile", Toast.LENGTH_SHORT).show();
                         fragment = new ProfileFragment();
+                        fragmentManager.beginTransaction().replace(R.id.flContainerTop,new ProfileTopFragment()).commit();
                         break;
                 }
                 if (fragment != null){

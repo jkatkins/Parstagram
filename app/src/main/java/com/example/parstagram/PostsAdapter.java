@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.parstagram.Fragments.ComposeFragment;
 import com.example.parstagram.Fragments.DetailFragment;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
@@ -43,7 +44,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
-        holder.bind(post);
+        try {
+            holder.bind(post);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -67,6 +72,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvUsername;
         private ImageView ivImage;
         private TextView tvDescription;
+        private ImageView ivProfilePicture;
         public Post currentPost;
 
         public ViewHolder(@NonNull View itemView) {
@@ -74,6 +80,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUsername = itemView.findViewById(R.id.tvUsername);
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,7 +97,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             });
         }
 
-        public void bind(Post post) {
+        public void bind(Post post) throws ParseException {
             tvDescription.setText(post.getDescription());
             tvUsername.setText(post.getUser().getUsername());
             currentPost = post;
@@ -98,6 +105,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (image != null) {
                 Glide.with(context).load(post.getImage().getUrl()).into(ivImage);
             }
+            String imageUrl = post.getUser().getParseFile("Picture").getUrl();
+            Glide.with(context).load(imageUrl).into(ivProfilePicture);
         }
     }
 }
