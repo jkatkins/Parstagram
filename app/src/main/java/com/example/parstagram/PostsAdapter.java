@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.parstagram.Fragments.ComposeFragment;
 import com.example.parstagram.Fragments.DetailFragment;
+import com.example.parstagram.Fragments.ProfileFragment;
+import com.example.parstagram.Fragments.ProfileTopFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -116,6 +118,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         ibLike.setImageResource(R.mipmap.ic_heart_clear_foreground);
                     }
                     currentPost.saveInBackground();
+                }
+            });
+            ivProfilePicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ProfileFragment fragInfo = new ProfileFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("user", Parcels.wrap(currentPost.getUser()));
+                    fragInfo.setArguments(bundle);
+                    FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.flContainer,fragInfo).commit();
+                    ProfileTopFragment fragInfoTop = new ProfileTopFragment();
+                    fragInfoTop.setArguments(bundle);
+                    fragmentManager.beginTransaction().replace(R.id.flContainerTop,fragInfoTop).commit();
                 }
             });
         }

@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.parstagram.Fragments.ComposeFragment;
+import com.example.parstagram.Fragments.DetailFragment;
 import com.example.parstagram.Fragments.PostsFragment;
 import com.example.parstagram.Fragments.ProfileFragment;
 import com.example.parstagram.Fragments.ProfileTopFragment;
@@ -32,6 +33,8 @@ import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.parceler.Parcels;
 
 import java.io.File;
 import java.util.List;
@@ -81,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         Toast.makeText(MainActivity.this, "profile", Toast.LENGTH_SHORT).show();
                         fragment = new ProfileFragment();
-                        fragmentManager.beginTransaction().replace(R.id.flContainerTop,new ProfileTopFragment()).commit();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("user", Parcels.wrap(ParseUser.getCurrentUser()));
+                        fragment.setArguments(bundle);
+                        ProfileTopFragment fragmentTop = new ProfileTopFragment();
+                        fragmentTop.setArguments(bundle);
+                        fragmentManager.beginTransaction().replace(R.id.flContainerTop,fragmentTop).commit();
                         break;
                 }
                 if (fragment != null){

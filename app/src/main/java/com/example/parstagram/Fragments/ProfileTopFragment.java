@@ -30,12 +30,16 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
+import org.parceler.Parcels;
+
 import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
 public class ProfileTopFragment extends Fragment {
 
+    ParseUser user;
+    Bundle bundle;
     FragmentProfileTopBinding binding;
     ImageView ivPicture;
     TextView tvUsername;
@@ -52,6 +56,8 @@ public class ProfileTopFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bundle = this.getArguments();
+        user = Parcels.unwrap(bundle.getParcelable("user"));
     }
 
     @Override
@@ -68,21 +74,21 @@ public class ProfileTopFragment extends Fragment {
         ivPicture = binding.ivPicture;
         tvUsername = binding.tvUsername;
         btnTakePicture = binding.btnTakePicture;
-        btnTakePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchCamera();
-            }
-        });
-        ParseUser user = null;
-        try {
-            user = ParseUser.getCurrentUser().fetch();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         tvUsername.setText(user.getUsername());
-        String imageUrl = ParseUser.getCurrentUser().getParseFile("Picture").getUrl();
+        String imageUrl = user.getParseFile("Picture").getUrl();
         Glide.with(view).load(imageUrl).into(ivPicture);
+        if (!user.equals(ParseUser.getCurrentUser())) {
+            btnTakePicture.setVisibility(View.INVISIBLE);
+        } else {
+            btnTakePicture.setVisibility(View.VISIBLE);
+            btnTakePicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    launchCamera();
+                }
+            });
+        }
+
     }
 
     @Override public void onDestroyView() {
