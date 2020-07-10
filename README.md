@@ -28,7 +28,7 @@ The following **stretch** features are implemented:
 - User Profiles:
   - [X] Allow the logged in user to add a profile photo
   - [X] Display the profile photo with each post
-  - [ ] Tapping on a post's username or profile photo goes to that user's profile page
+  - [X] Tapping on a post's username or profile photo goes to that user's profile page
   - [ ] User Profile shows posts in a grid view
 - [X] User can comment on a post and see all comments for each post in the post details screen.
 - [X] User can like a post and see number of likes for each post in the post details screen.
@@ -46,7 +46,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-https://recordit.co/07ZdI6gcrq
+https://recordit.co/iUecYQCGcv
 
 GIF created with recordit
 
