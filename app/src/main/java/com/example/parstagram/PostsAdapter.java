@@ -73,6 +73,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private ImageView ivImage;
         private TextView tvDescription;
         private ImageView ivProfilePicture;
+        private TextView tvCreatedDate;
         public Post currentPost;
 
         public ViewHolder(@NonNull View itemView) {
@@ -81,6 +82,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             ivImage = itemView.findViewById(R.id.ivImage);
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
+            tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,6 +109,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
             String imageUrl = post.getUser().getParseFile("Picture").getUrl();
             Glide.with(context).load(imageUrl).into(ivProfilePicture);
+            tvCreatedDate.setText(post.getCreatedAt().toString());
         }
     }
 }
