@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,9 +20,11 @@ import com.example.parstagram.Fragments.ComposeFragment;
 import com.example.parstagram.Fragments.DetailFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
@@ -74,6 +77,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         private TextView tvDescription;
         private ImageView ivProfilePicture;
         private TextView tvCreatedDate;
+        private TextView tvNumLikes;
+        private ImageButton ibLike;
         public Post currentPost;
 
         public ViewHolder(@NonNull View itemView) {
@@ -83,7 +88,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvDescription = itemView.findViewById(R.id.tvDescription);
             ivProfilePicture = itemView.findViewById(R.id.ivProfilePicture);
             tvCreatedDate = itemView.findViewById(R.id.tvCreatedDate);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            tvNumLikes = itemView.findViewById(R.id.tvNumLikes);
+            ibLike = itemView.findViewById(R.id.ibLike);
+            ivImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.i("spqqrf",Integer.toString(getAdapterPosition()));
@@ -95,6 +102,20 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     fragInfo.setArguments(bundle);
                     FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.flContainer,fragInfo);
                     transaction.commit();
+                }
+            });
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Boolean addedLike = currentPost.changeLike();
+                    if (addedLike) {
+                        tvNumLikes.setText(Integer.toString(currentPost.getLikes().size()));
+                        ibLike.setImageResource(R.mipmap.ic_heart_filled_foreground);
+                    } else {
+                        tvNumLikes.setText(Integer.toString(currentPost.getLikes().size()));
+                        ibLike.setImageResource(R.mipmap.ic_heart_clear_foreground);
+                    }
+                    currentPost.saveInBackground();
                 }
             });
         }
@@ -110,6 +131,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             String imageUrl = post.getUser().getParseFile("Picture").getUrl();
             Glide.with(context).load(imageUrl).into(ivProfilePicture);
             tvCreatedDate.setText(post.getCreatedAt().toString());
+            ArrayList<String> likes = post.getLikes();
+            for (int i = 0; i < likes.size();i++) {
+                if (likes.get(i).equals(ParseUser.getCurrentUser().getUsername())) {
+                    ibLike.setImageResource(R.mipmap.ic_heart_filled_foreground);
+                }
+            }
+            tvNumLikes.setText(Integer.toString(likes.size()));
         }
     }
 }

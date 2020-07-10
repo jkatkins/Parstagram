@@ -1,5 +1,7 @@
 package com.example.parstagram;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -16,7 +18,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "Image";
     public static final String KEY_USER = "user";
     public static final String KEY_CREATED_KEY = "createdAt";
-    public static final String KEY_COMMENTS = "Comments";
+    public static final String KEY_LIKES = "Likes";
 
     public Post (){}
 
@@ -42,4 +44,21 @@ public class Post extends ParseObject {
         put(KEY_USER,user);
     }
 
+    public ArrayList<String> getLikes() {
+        return (ArrayList<String>)get("Likes");
+    }
+    public Boolean changeLike() {
+        ArrayList<String> likes = (ArrayList<String>)get("Likes");
+        for (int i = 0; i < likes.size();i++) {
+            if (likes.get(i).equals(ParseUser.getCurrentUser().getUsername())) {
+                Log.i("Like","Already liked, now disliking");
+                likes.remove(i);
+                put(KEY_LIKES,likes);
+                return false;
+            }
+        }
+        Log.i("Like","adding new like");
+        add(KEY_LIKES,ParseUser.getCurrentUser().getUsername());
+        return true;
+    }
 }

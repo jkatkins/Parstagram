@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +49,6 @@ public class DetailFragment extends Fragment {
     FragmentDetailBinding binding;
     TextView tvUsername;
     TextView tvDescription;
-    TextView tvCaption;
     TextView tvTimestamp;
     ImageView ivImage;
     EditText etComment;
@@ -56,6 +56,8 @@ public class DetailFragment extends Fragment {
     RecyclerView rvComments;
     Bundle bundle;
     Post post;
+    TextView tvNumLikes;
+    ImageButton ibLike;
     CommentsAdapter adapter;
     List<Comment> commentList;
 
@@ -85,10 +87,18 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tvUsername = binding.tvUsername;
         tvDescription = binding.tvDescription;
-        tvCaption = binding.tvCaption;
         tvTimestamp = binding.tvTimestamp;
         ivImage = binding.ivImage;
         rvComments = binding.rvComments;
+        tvNumLikes = binding.tvNumLikes;
+        tvNumLikes.setText(Integer.toString(post.getLikes().size()));
+        ibLike = binding.ibLike;
+        ArrayList<String> likes = post.getLikes();
+        for (int i = 0; i < likes.size();i++) {
+            if (likes.get(i).equals(ParseUser.getCurrentUser().getUsername())) {
+                ibLike.setImageResource(R.mipmap.ic_heart_filled_foreground);
+            }
+        }
         commentList = new ArrayList<>();
         adapter = new CommentsAdapter(getContext(), commentList);
         rvComments.setAdapter(adapter);
@@ -114,6 +124,20 @@ public class DetailFragment extends Fragment {
                     Toast.makeText(getContext(), "Posting Comment", Toast.LENGTH_SHORT).show();
                     saveComment(comment,ParseUser.getCurrentUser());
                 }
+            }
+        });
+
+        ibLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Boolean addedLike = post.changeLike();
+                tvNumLikes.setText(Integer.toString(post.getLikes().size()));
+                if (addedLike) {
+                    ibLike.setImageResource(R.mipmap.ic_heart_filled_foreground);
+                } else {
+                    ibLike.setImageResource(R.mipmap.ic_heart_clear_foreground);
+                }
+                post.saveInBackground();
             }
         });
 
